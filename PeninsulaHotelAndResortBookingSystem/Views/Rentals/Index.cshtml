@@ -1,0 +1,32 @@
+﻿    <div class="row">
+        @{ 
+            if (Model.Facilities != null)
+            {
+                if (Model.Facilities.Items != null)
+                {
+                    if (Model.Facilities.Items.Count > 0)
+                    {
+                       <div class="row container-fluid">
+                            @{
+                                foreach (var facility in Model.Facilities.Items)
+                        {
+                                    <div class="col-md-4">
+                                        <figure class="figure border-dark a">
+                                            <img src="https://via.placeholder.com/128x128" /> <br />
+                                            <span>@facility.Name</span> <br />
+                                            <span>Rates: @facility.Rates</span> <br />
+                                            <span>Occupants: @facility.Occupants</span> <br />
+                                            <span>Description: @facility.Description</span> <br />
+                                            <span> @facility.Type</span>
+                                        </figure>
+                                    </div>  
+                        }
+                            }
+                        </div>
+                    }
+                }
+            }
+        }
+    </div>
+
+

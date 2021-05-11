@@ -1,0 +1,186 @@
+﻿@{
+    Layout = "~/views/shared/_WebLayout.cshtml";
+}
+
+
+<section>
+
+    <div class="single-shorter">
+        <label>Search :</label>
+        <input type="text" class="search" value="@Model.Users.Keyword" name="search" id="keyword">
+    </div>
+    @{
+        if (Model.Users != null)
+        {
+            if (Model.Users.Items != null)
+            {
+                if (Model.Users.Items.Count > 0)
+                {
+
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <table class="table table-bordered table-primary table table-responsive ">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center col-3">NAME</th>
+                                        <th class="text-center">EMAIL</th>
+                                        <th class="text-center">ADDRESS</th>
+                                        <th class="text-center">BIRTHDATE</th>
+                                        <th class="text-center">CONTACT</th>
+                                        <th class="text-center">SEX</th>
+                                        <th class="text-center"><a href="#" onclick="newUser()"><i class="fas fa-plus"></i></a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @{ foreach (var user in Model.Users.Items)
+                                        {
+                                            <tr>
+                                                <td>@user.FullName</td>
+                                                <td>@user.Email</td>
+                                                <td>@user.Address</td>
+                                                <td>@user.BirthDate.ToString("MM/dd/yyyy")</td>
+                                                <td>@user.PhoneNumber</td>
+                                                <td>@user.Sex</td>
+                                                <td>
+                                                    <a href="#"><i class="fas fa-pen-nib"></i></a>
+                                                    <a href="#" onclick="confirmDelete('@user.UserID','@user.FirstName','@user.LastName')"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+</section>
+@section Scripts
+{
+    <div class="modal" tabindex="-1" role="dialog" id="delete-user">
+        <div class="modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="/manage/users/delete" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Item<span class=""></span>?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete <span class="user-name"></span>?</p>
+                        <input type="hidden" name="Id" id="user-id" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="add-user">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="col-10 modal-header">Add New User</div>
+                <div class="col-8 mx-auto modal-body">
+                    <form method="post" action="~/Create">
+                        <div class="form-group">
+                            <label class="col-form-label">Email</label>
+                            <input type="email" class="form-control" id="Email" name="Email" />
+                        </div>
+                        <div class="form-group">
+                            <label col-form-label>First Name</label>
+                            <input type="text" class="form-control" id="FirstName" name="FirstName" />
+                        </div>
+                        <div class="form-group">
+                            <label col-form-label>Last Name</label>
+                            <input type="text" class="form-control" id="LastName" name="LastName" />
+                        </div>
+                        <div class="form-group">
+                            <label col-form-label>Birthdate</label>
+                            <input type="date" class="form-control" id="BirthDate" name="BirthDate" />
+                        </div>
+                        <div class="form-group">
+                            <label col-form-label>Address</label>
+                            <input type="text" class="form-control" id="Address" name="Address" />
+                        </div>
+                        <div class="form-group">
+                            <label col-form-label>Phone Number</label>
+                            <input type="number" class="form-control" id="PhoneNumber" name="PhoneNumber" />
+                        </div>
+                        <div class="form-group">
+                            <label col-form-label>Sex</label>
+                            <select class="form-control" id="Sex" name="Sex">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group row" style="margin-top: 15px">
+                            <div class="col-4 mx-auto">
+                                <button type="submit" value="Create" class="btn btn-success">Submit</button>
+                            </div>
+                            <div class="col-4 mx-auto">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var pageIndex = @(Model.Users.Items != null ? Model.Users.PageIndex : 1);
+        var pageSize = @(Model.Users.Items != null ? Model.Users.PageSize : 10);
+        var pageCount = @(Model.Users.Items != null ? Model.Users.PageCount : 0);
+        var keyword = "@(Model.Users.Items != null ? Model.Users.Keyword : "")";
+        var baseUrl = location.protocol + '//' + location.host + location.pathname;
+        var filterStr = "@(!string.IsNullOrEmpty(Model.Users.FilterString) ? Model.Users.FilterString : "")";
+
+        function search() {
+            window.location = baseUrl + "?keyword=" + keyword + "&pageSize=" + pageSize + "&pageIndex=" + pageIndex + filterStr;
+        }
+
+        $("#keyword").blur(function () {
+            keyword = $("#keyword").val();
+            if (filterStr) {
+                filterStr = "&" + filterStr;
+            }
+            search();
+        });
+        $("#keyword").on('keypress', function (e) {
+            if (e.which == 13) {
+                keyword = $("#keyword").val();
+                if (filterStr) {
+                    filterStr = "&" + filterStr;
+                }
+                search();
+            }
+        });
+        function confirmDelete(id, fname, lname)
+        {
+            var fn = fname;
+            var ln = lname;
+            var name = fn.concat(ln)
+            $("#user-id").val(id); 
+            $(".user-name").html(name);
+            $("#delete-user").modal("show");
+        }
+
+        function newUser()
+        {
+            $("#add-user").modal("show");
+        }
+    </script>
+}
+
+
+
+
+
+
