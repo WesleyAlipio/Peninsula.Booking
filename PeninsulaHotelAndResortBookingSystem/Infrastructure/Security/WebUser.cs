@@ -22,5 +22,6 @@ namespace PeninsulaHotelAndResortBookingSystem.Infrastructure.Security
         {
             return Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier));
         }
+
     }
 }

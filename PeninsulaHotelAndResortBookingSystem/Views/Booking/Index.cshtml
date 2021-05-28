@@ -5,13 +5,15 @@
     string room = "RoomRes";
     string venue = "VenueRes";
     string cottage = "CottageRes";
-} @using PeninsulaHotelAndResortBookingSystem.Infrastructure.Security;
+} 
+
+@using PeninsulaHotelAndResortBookingSystem.Infrastructure.Security;
 
 <section>
     <div class="container">
         <div class="jumbotron-fluid col-12 py-2">
             <div class=" row py-2">
-                <div class="card rounded text-white col-xl-4 mx-auto   bg-primary mb-3" style="max-width: 20rem;">
+                <div class="card rounded text-white col-xl-4 mx-auto bg-primary mb-3" style="max-width: 20rem;">
                     <h2 class=" badge-pill badge badge-light ">Cottage</h2>
 
                     <div class=" text-white container">
@@ -24,7 +26,7 @@
                     <h2 class=" badge-pill badge badge-light">Venue</h2>
 
                     <div class="container text-white">
-                        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit,@{var user = this.User;  @user.GetFullName() }</p>
+                        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
                     </div>
 
                     <a href="#" onclick="openDate('@venue')" type="button" class="btn btn-primary btn-outline-info">>Book a Venue</a>
@@ -72,11 +74,10 @@
                                     <div class="col-3 ml-auto">
                                         <a href="#" onclick="nextPage()" type="button" class="btn btn-primary">Next</a>
                                     </div>
-                             
+                            
                                     <div class=" col-3 mr-auto">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                     </div>
-
                         </div>
                     </form>
                 </div>                 

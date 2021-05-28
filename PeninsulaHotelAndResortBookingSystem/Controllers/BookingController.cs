@@ -7,6 +7,9 @@ using PeninsulaHotelAndResortBookingSystem.Infrastructure.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using System.Net.Mail;
+using System.Net;
 
 namespace PeninsulaHotelAndResortBookingSystem.Controllers
 {
@@ -15,9 +18,17 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
 
 
         private readonly BookingDBContext _context;
-        public BookingController(BookingDBContext context)
+        protected readonly IConfiguration _config;
+        private string emailUserName;
+        private string emailPassword;
+        public BookingController(BookingDBContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
+            var emailConfig = this._config.GetSection("Email");
+            emailUserName = emailConfig["Username"].ToString();
+            emailPassword = emailConfig["Password"].ToString();
+
         }
         public IActionResult Index(int pageIndex = 1,
                                     int pageSize = 10,
@@ -79,11 +90,11 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
 
         public IActionResult RoomRes(DateTime dateArr, DateTime dateDep)
         {
-            var dateIn = dateArr;
-            var dateOut = dateDep;
+            DateTime dateIn = dateArr;
+            DateTime dateOut = dateDep;
             
-            ViewBag.dateIn = dateArr;
-            ViewBag.dateOut = dateDep;
+            ViewBag.dateIn = dateArr.ToString();
+            ViewBag.dateOut = dateDep.ToString();
 
             IQueryable<Facility> allFacilities = _context.Facilities.AsQueryable();
             IQueryable<Reservation> allReservations = _context.Reservations.AsQueryable();   
@@ -108,7 +119,9 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
         [HttpPost,Route("~/Booking/NewBook")]
         public IActionResult NewBook(BookViewModel model)
         {
-            
+
+
+            Guid rID = Guid.NewGuid();
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("Error", "Required");
@@ -117,15 +130,75 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
             Reservation reservation = new Reservation()
             { 
                 FacilityID = model.FacilityID,
-                ReservationID = Guid.NewGuid(),
+                ReservationID = rID,
                 UserID = User.GetId(),
                 FacilityType = model.FacilityType,
                 CheckIn = model.CheckIn,
                 CheckOut = model.CheckOut
             };
+            Billing billing = new Billing()
+            {
+              UserID = User.GetId(),
+              BillingID = Guid.NewGuid(),
+              ReservationID = rID,
+              TotalAmount = model.RentCharges,
+              MiscCharges = 0,
+              RentCharges = model.RentCharges,
+            };
             _context.Reservations.Add(reservation);
+            _context.Billings.Add(billing);
             _context.SaveChanges();
+            this.SendNow("Hello " + this.User.GetFullName() + "Thank you for Booking in Peninsula Hotel and Resort" +  "Check In:" + model.CheckIn  + "Check Out:" + model.CheckOut + "Payment:" + model.RentCharges, this.User.GetEmailAddress(), "Peninsula Confirmed Reservation", "Thank you for making a Reservation in Peninsula!");
             return Redirect("~/");
+        }
+
+        public IActionResult confirmBooking(DateTime dateArr, DateTime dateDep, Guid RoomID) 
+        {
+            DateTime dateIn = dateArr;
+            DateTime dateOut = dateDep;
+
+            ViewBag.dateIn = dateArr.ToString();
+            ViewBag.dateOut = dateDep.ToString();
+
+            int rates;
+            String totalDays = (dateDep - dateArr).TotalDays.ToString();
+            IQueryable<Facility> facility = _context.Facilities.AsQueryable();
+            
+            rates = facility.Where(f => f.FacilityID == RoomID).Select(f => f.Rates).FirstOrDefault();
+            int totalAmount = rates * int.Parse(totalDays);
+            facility = facility.Where(f => f.FacilityID == RoomID);
+            var model = facility.ToList();
+            ViewBag.bookDays = totalDays;
+            ViewBag.amount = totalAmount;
+            return View(model);
+        }
+
+        private void SendNow(string message, string messageTo, string messageName, string emailSubject)
+        {
+            var fromAddress = new MailAddress(emailUserName, "CSM Bataan Apps");
+            string body = message;
+
+
+            ///https://support.google.com/accounts/answer/6010255?hl=en
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, emailPassword),
+                Timeout = 20000
+            };
+
+            var toAddress = new MailAddress(messageTo, messageName);
+
+            smtp.Send(new MailMessage(fromAddress, toAddress)
+            {
+                Subject = emailSubject,
+                Body = body,
+                IsBodyHtml = true
+            });
         }
     }
 }

@@ -64,7 +64,7 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
                 if (BCrypt.BCryptHelper.CheckPassword(model.Password,user.Password))
                 {
                     await SignIn(user);
-                    return RedirectToAction("~/Booking");
+                    return RedirectToAction("~");
                 }
                 ModelState.AddModelError("Error", "Invalid Login.");
                 return View(model);
@@ -103,7 +103,7 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
 
             this.SendNow("Hello " +fullname + " Please use this one time password to login:" + password ,model.Email,"Peninsula Account Registration","Welcome to Peninsula!");
 
-            return Redirect("~/");
+            return Redirect("../");
         }
 
         private Random random = new Random();
@@ -148,6 +148,7 @@ namespace PeninsulaHotelAndResortBookingSystem.Controllers
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.FirstName));
             identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+            identity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
             var principal = new ClaimsPrincipal(identity);
 

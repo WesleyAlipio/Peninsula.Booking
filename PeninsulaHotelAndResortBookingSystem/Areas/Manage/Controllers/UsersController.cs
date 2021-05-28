@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PeninsulaHotelAndResortBookingSystem.Areas.Manage.Models;
 using PeninsulaHotelAndResortBookingSystem.Infrastructure.Domain;
 using PeninsulaHotelAndResortBookingSystem.Infrastructure.Domain.Models;
@@ -13,12 +15,20 @@ namespace PeninsulaHotelAndResortBookingSystem.Areas.Manage.Controllers
     public class UsersController : Controller
     {
         private readonly BookingDBContext _context;
-        public UsersController(BookingDBContext context)
+        protected readonly IConfiguration _config;
+        private string emailUserName;
+        private string emailPassword;
+        
+        public UsersController(BookingDBContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
+            var emailConfig = this._config.GetSection("Email");
+            emailUserName = emailConfig["Username"].ToString();
+            emailPassword = emailConfig["Password"].ToString();
         }
 
-        [HttpGet, Route("~/Manage/Users")]
+        [HttpGet, Route("~/manage/users")]
         public IActionResult Index(int pageIndex = 1,
                                     int pageSize = 10,
                                     string sortBy = "FirstName",

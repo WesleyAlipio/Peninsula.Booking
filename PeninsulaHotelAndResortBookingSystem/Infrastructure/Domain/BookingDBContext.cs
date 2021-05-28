@@ -10,8 +10,7 @@ namespace PeninsulaHotelAndResortBookingSystem.Infrastructure.Domain
 {
     public class BookingDBContext : DbContext
     {
-        public BookingDBContext(DbContextOptions<BookingDBContext> options)
-            : base(options) { }
+        public BookingDBContext(DbContextOptions<BookingDBContext> options) : base(options){}
         public DbSet<Billing> Billings { get; set; }
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
@@ -157,7 +156,7 @@ namespace PeninsulaHotelAndResortBookingSystem.Infrastructure.Domain
             modelBuilder.Entity<Facility>()
                         .HasData(facilities);
 
-
+            var salt = BCrypt.BCryptHelper.GenerateSalt();
             List<User> users = new List<User>()
             {
                 new User()
@@ -168,7 +167,7 @@ namespace PeninsulaHotelAndResortBookingSystem.Infrastructure.Domain
                     Email = "JohnJohn@Doemail.com",
                     PhoneNumber = "09485209870",
                     Address = "Orani, Bataan",
-                    Password = "SangeYasha",
+                    Password = BCrypt.BCryptHelper.HashPassword("SangeYasha",salt),
                     Role = Models.Enums.Role.Admin,
                     Sex = Models.Enums.Sex.Male,
                     UserID = Guid.Parse("d6f01585-5d6a-44ff-aaad-2d8648268582")
@@ -182,12 +181,11 @@ namespace PeninsulaHotelAndResortBookingSystem.Infrastructure.Domain
                     Email = "JaneJane@Doemail.com",
                     PhoneNumber = "09485209870",
                     Address = "Dinalupihan, Bataan",
-                    Password = "MantaStyle",
+                    Password = BCrypt.BCryptHelper.HashPassword("MantaStyle",salt),
                     Role = Models.Enums.Role.Admin, 
                     Sex = Models.Enums.Sex.Female,
                     UserID = Guid.Parse("aca4e15f-379b-44ce-90c0-ce8374cd0cd7")
                 }
-
             };
 
             modelBuilder.Entity<User>()

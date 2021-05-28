@@ -359,7 +359,6 @@ C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netco
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\PeninsulaHotelAndResortBookingSystem.dll
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\PeninsulaHotelAndResortBookingSystem.pdb
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\PeninsulaHotelAndResortBookingSystem.genruntimeconfig.cache
-C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Rentals\Index.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_WebLayout.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\User\Index.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
@@ -404,7 +403,6 @@ C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\bin\Debug\netco
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Rentals\Create.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\bin\Debug\netcoreapp3.1\refs\System.Text.Json.dll
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Booking\Index.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\User\CreateAccount.cshtml.g.cs
@@ -439,3 +437,5 @@ C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netco
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Booking\RoomRes.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Booking\VenueRes.cshtml.g.cs
 C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\PeninsulaHotelAndResortBookingSystem.csprojAssemblyReference.cache
+C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\User\AccessDenied.cshtml.g.cs
+C:\Users\admin\source\repos\PeninsulaHotelAndResortBookingSystem\obj\Debug\netcoreapp3.1\Razor\Views\Booking\confirmBooking.cshtml.g.cs
